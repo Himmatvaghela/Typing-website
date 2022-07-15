@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing speed test website</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body{
+            background-color: #3498db;
+        }
+
+        .mainDiv {
+            width: 100vw;
+            min-height: 100vh;
+            background-color: #3498db;
+            position: relative;
+        }
+
+        .centerDiv {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        h1 {
+            text-transform: capitalize;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ecf0f1;
+            text-shadow: 1px 2px 3px #2980b9;
+            font-size: 3.1rem;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        textarea {
+            background-color: #444;
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+            border-radius: 10px 10px 0 0;
+            border: 20px solid #34495e;
+            color: white;
+        }
+
+        #btn {
+            padding: 5px 12px;
+            border-radius: 14px;
+            border: 3px solid #2980b9;
+            background-color: #ecf0f1;
+            font-size: 1rem;
+        }
+        #mywords{
+            width: 50vw;
+            height: 30vh;
+        }
+
+        @media screen and (max-width :700px){
+            .mainDiv{
+                max-height: 140vh;
+            }
+            h2{
+                width: 80%;
+                margin: auto;
+
+            }
+            h1{
+                font-size: 7vw;
+            }
+            #mywords{
+                width: 80vw;
+                height: 52%;
+            }
+            .centerDiv{
+                height: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mainDiv">
+        <div class="centerDiv">
+            <h1>Check typing speed</h1>
+            <h2 id="msg"></h2>
+            <br>
+            <textarea id="mywords"  placeholder="press start & then start" disabled></textarea>
+            <!-- <textarea name="" id="" cols="80" rows="10"></textarea> -->
+            <button id="btn">Start</button>
+        </div>
+    </div>
+
+    <script>
+        let arr=["This is our website page whatever you want go get You will get here so keep prectice","Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit deserunt numquam voluptatem praesentium odio placeat deleniti repellat in ad cupiditate.","Improve your typing speed by using this app regular and freqently if you want to improe it too fast then use for 2 hours minimum","Are you sure you can improve yourself if not then what would you do for improving your confidence you should hence some new skills so overall your confidence will stay high"]
+
+        
+        const msg=document.getElementById("msg");
+        var mywords=document.getElementById("mywords");
+        const btn=document.getElementById("btn");
+        let startTime , endTime;
+
+        const starttest=()=>{
+            
+            const random=Math.floor(Math.random()*arr.length)
+            let time=new Date();
+            startTime=time.getTime();
+            msg.innerText=arr[random];
+            console.log(random)
+            btn.innerText="Done";
+
+        }
+
+        const endtest=()=>{
+            let time=new Date();
+            endTime=time.getTime();
+            let Totaltime=((endTime-startTime)/1000);
+            console.log(Totaltime)
+
+            let totalstr = mywords.value;
+            let wordcount=wordcounter(totalstr)
+
+            let speed=(Math.round(wordcount/Totaltime)*60);
+
+            let finalmsg=`You typed total at ${speed} Words per minutes`;
+
+            finalmsg+=comparewords(msg.innerText,totalstr)
+            console.log(finalmsg)
+            msg.innerText=finalmsg;
+        }
+
+        const comparewords=(str1,str2)=>{
+            let words1=str1.split(" ");
+            let words2=str2.split(" ");
+            let cnt=0;
+
+            words1.forEach(function (item,index){
+                
+                if(item==words2[index]){
+                    cnt++
+                }
+            })
+                console.log(cnt)
+            let errorwords=(words1.length-cnt);
+            return ( cnt + " correct out of " + words1.length + " words and the total number of error are "+errorwords +".")
+        }
+
+        const wordcounter=(str)=>{
+            let response=str.split(" ").length;
+            console.log(response)
+            return response;
+        }
+
+        btn.addEventListener('click',()=>{
+            if(btn.innerText=="Start"){
+                mywords.disabled=false;
+                starttest();
+            }else if(btn.innerText=="Done"){
+                mywords.disabled=true;
+                btn.innerText="Start";
+                endtest();
+                mywords.value="";
+            }
+        })
+    </script>
+</body>
+
+</html>
